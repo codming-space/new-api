@@ -13,9 +13,6 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - name: Set up environment
         run: |
@@ -38,6 +35,17 @@ jobs:
           cp overrides/Dockerfile upstream/Dockerfile
           cd upstream
           git describe --tags > VERSION
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Build frontend with Bun
+        run: |
+          cd upstream/web
+          bun install
+          DISABLE_ESLINT_PLUGIN='true' VITE_REACT_APP_VERSION=${{ github.event.inputs.tag }} bun run build
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
