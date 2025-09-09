@@ -36,6 +36,8 @@ jobs:
       - name: Apply override files
         run: |
           cp overrides/Dockerfile upstream/Dockerfile
+          cd upstream
+          git describe --tags > VERSION
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
