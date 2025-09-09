@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_PREFIX: codming/new-api
+  IMAGE: codming/new-api
 
 jobs:
   build-and-push-image:
@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.IMAGE_PREFIX }}-${{ matrix.arch_suffix }}
+          images: ${{ env.IMAGE }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -62,8 +62,8 @@ jobs:
           file: ./upstream/Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE_PREFIX }}-${{ matrix.arch_suffix }}:${{ github.event.inputs.tag }}
-            ${{ env.IMAGE_PREFIX }}-${{ matrix.arch_suffix }}:latest
+            ${{ env.IMAGE }}:${{ github.event.inputs.tag }}
+            ${{ env.IMAGE }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/s390x
           cache-from: type=gha
