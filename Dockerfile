@@ -19,7 +19,8 @@ FROM alpine:3.19
 
 RUN apk upgrade --no-cache \
     && apk add --no-cache ca-certificates tzdata ffmpeg \
-    && update-ca-certificates
+    && update-ca-certificates \
+    && rm -rf /var/cache/apk/*
 
 COPY --from=go-builder /build/one-api /
 EXPOSE 3000
