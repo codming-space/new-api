@@ -44,14 +44,15 @@ jobs:
       - name: Build frontend with Bun
         run: |
           cd frontend
+          ls -al
           bun install
           DISABLE_ESLINT_PLUGIN='true' VITE_REACT_APP_VERSION=${{ github.event.inputs.tag }} bun run build
           cd ..
           mv frontend/dist upstream/web
           cd upstream
           git describe --tags > VERSION
-          ls -la
           cat VERSION
+          git status
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
