@@ -30,6 +30,12 @@ jobs:
         with:
           path: 'overrides'
 
+      - name: Apply overrides
+        run: |
+          cp -r overrides/${{ github.event.inputs.tag }}/* upstream/
+          mkdir -p frontend
+          cp -r upstream/web/* frontend/
+
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -37,18 +43,14 @@ jobs:
 
       - name: Build frontend with Bun
         run: |
-          cp -r upstream/web overrides/web
-          cd overrides/web
+          cd frontend
           bun install
           DISABLE_ESLINT_PLUGIN='true' VITE_REACT_APP_VERSION=${{ github.event.inputs.tag }} bun run build
-
-      - name: Apply overrides
-        run: |
-          cp overrides/Dockerfile upstream/Dockerfile
-          cp -r overrides/web/dist upstream/web/dist
+          cd ..
+          mv frontend/dist upstream/web
           cd upstream
           git describe --tags > VERSION
-          ls -al
+          ls -la
           cat VERSION
 
       - name: Log in to Docker Hub
