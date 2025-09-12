@@ -17,9 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Tag } from '@douyinfe/semi-ui';
 import SkeletonWrapper from '../components/SkeletonWrapper';
 
 const HeaderLogo = ({
@@ -28,9 +26,6 @@ const HeaderLogo = ({
   logo,
   logoLoaded,
   isLoading,
-  systemName,
-  isSelfUseMode,
-  isDemoSiteMode,
   t,
 }) => {
   if (isMobile && isConsoleRoute) {
